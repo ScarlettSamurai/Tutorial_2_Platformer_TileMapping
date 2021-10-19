@@ -632,4 +632,4 @@ ScriptsOnlyBuild:
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/kaitd/OneDrive/Desktop/Tutorial_2/Tutorial_2_Platformer&Tilemapping/Builds/Tutorial_2_Platformer&Tilemapping.exe
+  playerPath: C:/Users/kaitd/OneDrive/Desktop/Test_builds/Tutorial_2_Platformer&Tilemapping.exe
