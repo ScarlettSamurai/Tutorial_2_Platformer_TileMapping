@@ -7,28 +7,47 @@ public class PlayerScript : MonoBehaviour
 
 {
 
-    private Rigidbody2D rd2d;
     public float speed;
     public Text score;
-    private int scoreValue = 0;
-    private int scoreText = 0;
     public Text WinScore;
+    public Text livesText;
+    public Transform Destination;
+    
+
+    public AudioSource BackgroundMusic;
+    public AudioSource WinSound;
+    public float volume = 1.0f;
+
+   
+    private Rigidbody2D rd2d;
+    private int scoreValue = 0;
+    private int playerLives = 3;
+    private int fakeScore = 0;
+    private bool GameOver = false;
+    
+   
 
     // Start is called before the first frame update
     void Start()
     {
         rd2d = GetComponent<Rigidbody2D>();
-        score.text = scoreValue.ToString ();
+        score.text =  "Score" + scoreValue.ToString ();
         WinScore.text = "";
+        livesText.text = " Lives: " + playerLives.ToString();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        float hozMovement = Input.GetAxis("Horizontal");
-        float verMovement = Input.GetAxis("Vertical");
+        if(GameOver == false)
+        {
+            float hozMovement = Input.GetAxis("Horizontal");
+            float verMovement = Input.GetAxis("Vertical");
+        
 
-        rd2d.AddForce(new Vector2(hozMovement * speed, verMovement * speed));
+            rd2d.AddForce(new Vector2(hozMovement * speed, verMovement * speed));
+        }
         
         if (Input.GetKey("escape"))
         {
@@ -42,13 +61,50 @@ public class PlayerScript : MonoBehaviour
         if(collision.collider.tag == "Coin")
         {
             scoreValue += 1;
-            score.text = scoreValue.ToString();
+            fakeScore += 1;
+            score.text = "Score:" + scoreValue.ToString();
+            Destroy(collision.collider.gameObject);
+
+            // Teleporation to Stage 2
+
+             if (fakeScore == 4)
+             {
+                GameObject.FindWithTag("Player").transform.position = new Vector3(54.9f, 6.2f, 0.0f);
+                playerLives = 3;
+                livesText.text = "Lives: " + playerLives.ToString();
+             }
+
+        }
+
+
+       
+
+        if(collision.collider.tag == "Enemy")
+        {
+            playerLives -=1;
+            score.text = "Score: " + scoreValue.ToString();
+            livesText.text = "Lives : " + playerLives.ToString();
             Destroy(collision.collider.gameObject);
         }
 
-        if(scoreValue == 1)
+        if(scoreValue == 10)
         {
+            GameOver = true;
+            if(scoreValue == 10 && GameOver == true)
+            {
+                BackgroundMusic.Stop();
+                WinSound.Play();
+            }
+            
             WinScore.text = "Great Job! You WIN!!! Created by Kaitlin Duffey";
+    
+        }
+
+
+        if (playerLives == 0)
+        {
+            WinScore.text = "Oops! You Lose! :( Game Created by Kaitlin Duffey";
+            Destroy(gameObject);
         }
     }
 
@@ -62,8 +118,5 @@ public class PlayerScript : MonoBehaviour
             }
         }
     }
-
-
-
 
 }
