@@ -31,7 +31,7 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
         rd2d = GetComponent<Rigidbody2D>();
-        score.text =  "Score" + scoreValue.ToString ();
+        score.text =  "Score: " + scoreValue.ToString ();
         WinScore.text = "";
         livesText.text = " Lives: " + playerLives.ToString();
 
@@ -49,10 +49,7 @@ public class PlayerScript : MonoBehaviour
             rd2d.AddForce(new Vector2(hozMovement * speed, verMovement * speed));
         }
         
-        if (Input.GetKey("escape"))
-        {
-            Application.Quit();
-        }
+     
         
     }
 
